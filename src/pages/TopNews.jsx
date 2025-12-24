@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { 
   Grid, 
   Box, 
@@ -12,25 +12,32 @@ import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import axios from 'axios';
 import NewsCard from '../components/NewsCard';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || '';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://ai-newsanalyzer.onrender.com';
 
 const TopNews = () => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const fetchedRef = useRef(false);
 
   useEffect(() => {
     const fetchTopNews = async () => {
+      if (fetchedRef.current && articles.length > 0) return;
+      
       try {
         setLoading(true);
+        setError(null);
         const response = await axios.get(`${API_BASE_URL}/api/news/top10`, {
           params: {
             country: 'us'
-          }
+          },
+          timeout: 30000
         });
         setArticles(response.data);
+        fetchedRef.current = true;
       } catch (err) {
-        setError(err.message);
+        console.error('API Error:', err);
+        setError(err.response?.data?.message || err.message || 'Failed to load news');
       } finally {
         setLoading(false);
       }

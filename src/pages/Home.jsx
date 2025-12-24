@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { 
   Grid, 
@@ -15,7 +15,7 @@ import axios from 'axios';
 import NewsCard from '../components/NewsCard';
 import CategoryFilter from '../components/CategoryFilter';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || '';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://ai-newsanalyzer.onrender.com';
 
 const Home = () => {
   const { category } = useParams();
@@ -23,26 +23,34 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showSummaries, setShowSummaries] = useState(false);
+  const fetchedRef = useRef(false);
 
   useEffect(() => {
     const fetchNews = async () => {
+      if (fetchedRef.current && articles.length > 0) return;
+      
       try {
         setLoading(true);
+        setError(null);
         const endpoint = showSummaries ? '/api/news/category-summary' : '/api/news/headlines';
         const response = await axios.get(`${API_BASE_URL}${endpoint}`, {
           params: {
             country: 'us',
             category: category || 'general'
-          }
+          },
+          timeout: 30000
         });
         setArticles(response.data);
+        fetchedRef.current = true;
       } catch (err) {
-        setError(err.message);
+        console.error('API Error:', err);
+        setError(err.response?.data?.message || err.message || 'Failed to load news');
       } finally {
         setLoading(false);
       }
     };
 
+    fetchedRef.current = false;
     fetchNews();
   }, [category, showSummaries]);
 
