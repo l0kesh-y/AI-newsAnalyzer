@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { 
   Grid, 
   Box, 
-  CircularProgress, 
   Typography, 
   Container, 
   Paper,

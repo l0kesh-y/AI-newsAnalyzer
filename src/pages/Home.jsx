@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { 
   Grid, 
   Box, 
-  CircularProgress, 
   Typography, 
   Container, 
   Paper, 
