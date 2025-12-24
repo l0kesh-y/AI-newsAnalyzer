@@ -1,0 +1,29 @@
+{
+  "short_name": "NewsHub Pro",
+  "name": "NewsHub Pro - Modern News Aggregator",
+  "description": "Stay updated with the latest news from around the world with AI-powered summaries and offline reading capabilities.",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "logo512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#2563eb",
+  "background_color": "#f8fafc",
+  "orientation": "portrait-primary",
+  "categories": ["news", "productivity", "lifestyle"],
+  "lang": "en-US"
+}
